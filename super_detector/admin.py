@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from super_detector.models import UserProfile, Category, SubCategory, Product
+from super_detector.models import UserProfile, Category, SubCategory, Brand, Product
 
 
 # Register your models here.
@@ -19,6 +19,10 @@ class SubcategoryAdmin(admin.ModelAdmin):
     pass
 
 
+class BrandAdmin(admin.ModelAdmin):
+    pass
+
+
 class ProductAdmin(admin.ModelAdmin):
     pass
 
@@ -26,4 +30,5 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(SubCategory, SubcategoryAdmin)
+admin.site.register(Brand, BrandAdmin)
 admin.site.register(Product, ProductAdmin)

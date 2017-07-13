@@ -34,22 +34,6 @@ class UserProfile(models.Model):
         return self.user.id
 
 
-class Brand(models.Model):
-    # This forgeign key is consider because of merchant user mapping to
-    # particular brand
-    user = models.ForeignKey(User, False)
-    name = models.CharField(max_length=255, null=False)
-    description = models.CharField(max_length=500, null=True)
-    slogan = models.CharField(max_length=255, null=True)
-    address = models.CharField(max_length=255, null=False)
-    img_url = models.CharField(max_length=400, null=True)
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
-
-    def __unicode__(self):
-        return "%s-%s-%s-%s" % (self.name, self.description, self.slogan, self.address)
-
-
 class FakeSellerDetail(models.Model):
     seller_name = models.CharField(max_length=255, null=False)
     seller_address = models.CharField(max_length=500, null=False)
@@ -90,6 +74,24 @@ class SubCategory(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class Brand(models.Model):
+    # This forgeign key is consider because of merchant user mapping to
+    # particular brand
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, null=False)
+    description = models.CharField(max_length=500, null=True)
+    slogan = models.CharField(max_length=255, null=True)
+    address = models.CharField(max_length=255, null=False)
+    img_url = models.CharField(max_length=400, null=True)
+    is_enabled = models.BooleanField(null=False, default=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return "%s-%s-%s-%s" % (self.name, self.description, self.slogan, self.address)
 
 
 class Product(models.Model):

@@ -16,6 +16,8 @@ from django.contrib.auth import authenticate, login, logout
 import json
 from rest_framework.authtoken.models import Token
 from django.db import IntegrityError
+from super_detector.constants import *
+from super_detector.error_code import *
 
 
 class CustomObtainAuthToken(ObtainAuthToken):
@@ -59,8 +61,8 @@ def get_user_profile(request):
 
 @csrf_exempt
 def login_user(request):
-    if request.method != 'POST':
-        json_result = {"code": 204, "message": "We are not supporting this for login, "}
+    if request.method != REQUEST_TYPE_POST:
+        json_result = {STATUS_TXT: {CODE_TXT: INVALID_REQUEST_TYPE, MESSAGE_TXT: BAD_REQUEST_MESSAGE}}
         return HttpResponse(json.dumps(json_result))
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
@@ -73,21 +75,27 @@ def login_user(request):
             token = Token.objects.create(user=user)
         except IntegrityError:
             token = Token.objects.get(user=user)
-        json_result = {"code": 200, "message": "successfull logged in ", "token": token.key}
+        json_result = {STATUS_TXT:
+            {
+                CODE_TXT: SUCCESS,
+                MESSAGE_TXT: SUCCESSFUll_LOGIN
+            },
+            TOKEN_TXT: token.key
+        }
         return HttpResponse(json.dumps(json_result))
     else:
         if User.objects.get_by_natural_key(email):
-            json_result = {"code": 201, "message": "email and password combination is wrong "}
+            json_result = {STATUS_TXT: {CODE_TXT: INVALID_CREDETIALS_TYPE, MESSAGE_TXT: INVALID_EMAIL_PASSWORD_TXT}}
             return HttpResponse(json.dumps(json_result))
         else:
-            json_result = {"code": 202, "message": "User does not exists"}
+            json_result = {STATUS_TXT: {CODE_TXT: USER_DOES_NOT_EXISTS, MESSAGE_TXT: USER_DOES_NOT_EXISTS}}
             return HttpResponse(json.dumps(json_result))
 
 
 @csrf_exempt
 def signup_user(request):
-    if request.method != 'POST':
-        json_result = {"code": 204, "message": "We are not supporting, fuck yourself"}
+    if request.method != REQUEST_TYPE_POST:
+        json_result = {STATUS_TXT: {CODE_TXT: INVALID_REQUEST_TYPE, MESSAGE_TXT: BAD_REQUEST_MESSAGE}}
         return HttpResponse(json.dumps(json_result))
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
@@ -99,12 +107,12 @@ def signup_user(request):
         user = User.objects.create_user(username=email, email=email, password=password)
     except:
         if User.objects.get_by_natural_key(email):
-            failure_message = "Email already exists please use forgot password to reset your password"
-            json_result = {"code": 203, "message": failure_message}
+            failure_message = EMAIL_ALREADY_EXISTS
+            json_result = {STATUS_TXT: {CODE_TXT: EMAIL_ALREADY_EXISTS, MESSAGE_TXT: failure_message}}
             return HttpResponse(json.dumps(json_result))
         else:
-            failure_message = "Unable to register the user at this moment"
-            json_result = {"code": 203, "message": failure_message}
+            failure_message = UNABLE_TO_REGISTER
+            json_result = {STATUS_TXT: {CODE_TXT: SERVER_ERROR, MESSAGE_TXT: failure_message}}
             return HttpResponse(json.dumps(json_result))
 
     user.first_name = firstname
@@ -118,27 +126,33 @@ def signup_user(request):
     user_profile.save()
     login(request, user)
     token = Token.objects.create(user=user)
-    json_result = {"code": 203, "message": "signup successfull ", "token": token.key}
+    json_result = {STATUS_TXT:
+        {
+            CODE_TXT: SUCCESS,
+            MESSAGE_TXT: SUCCESSFUll_SIGNUP
+        },
+        TOKEN_TXT: token.key
+    }
     return HttpResponse(json.dumps(json_result))
 
 
 @csrf_exempt
 def logout_user(request):
-    if request.method != 'GET':
-        json_result = {"code": 204, "message": "We are not supporting, use get method instead"}
+    if request.method != REQUEST_TYPE_GET:
+        json_result = {STATUS_TXT: {CODE_TXT: INVALID_REQUEST_TYPE, MESSAGE_TXT: BAD_REQUEST_MESSAGE}}
         return HttpResponse(json.dumps(json_result))
     logout(request)
     token_value = get_authorization_header(request)
     token = Token.objects.get(key=token_value)
     token.delete()
-    json_result = {"code": 205, "message": " Successfully logged out  "}
+    json_result = {STATUS_TXT: {CODE_TXT: SUCCESS, MESSAGE_TXT: SUCCESSFULL_LOGOUT}}
     return HttpResponse(json.dumps(json_result))
 
 
 @csrf_exempt
 def reset_password(request):
-    if request.method != 'POST':
-        json_result = {"code": 209, "message": "We are not supporting, use get method instead"}
+    if request.method != REQUEST_TYPE_POST:
+        json_result = {STATUS_TXT: {CODE_TXT: INVALID_REQUEST_TYPE, MESSAGE_TXT: BAD_REQUEST_MESSAGE}}
         return HttpResponse(json.dumps(json_result))
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
@@ -147,5 +161,5 @@ def reset_password(request):
     if user:
         print ("user is available")
     else:
-        json_result = {"code": 210, "message": "Email is not registered with us , please signup"}
+        json_result = {STATUS_TXT: {CODE_TXT: EMAIL_NOT_REGISTERED, MESSAGE_TXT: EMAIL_NOT_REGISTERED}}
         return HttpResponse(json.dumps(json_result))
