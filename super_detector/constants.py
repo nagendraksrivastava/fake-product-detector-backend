@@ -16,3 +16,5 @@ UNABLE_TO_REGISTER = "Unable to register user at this time"
 SUCCESSFULL_LOGOUT = "Successfully logged out"
 EMAIL_NOT_REGISTERED = "Email not registered with us"
 INVALID_TOKEN_TXT = "Invalid token, please logout and login again"
+
+PRODUCT_FOUND_IN_OUR_DATABASE = "Product found in our database"

@@ -104,7 +104,7 @@ class Product(models.Model):
     description = models.CharField(max_length=500, null=True)
     manufacturing_date = models.DateField()
     packaging_date = models.DateField()
-    depricated_date = models.DateField()
+    depricated_date = models.DateField(null=True)
     color = models.CharField(max_length=156, null=True)
     model = models.CharField(max_length=255, null=True)
     created = models.DateTimeField(auto_now_add=True)
