@@ -77,10 +77,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'product',
-        'USER': 'product',
-        'PASSWORD': 'product',
-        'HOST': 'localhost',
-        'PORT': '',
+        'USER': 'authkart',
+        'PASSWORD': 'authkart@123',
+        'HOST': '172.31.25.97',
+        'PORT': '3306',
     }
 }
 
