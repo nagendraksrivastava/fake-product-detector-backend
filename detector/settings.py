@@ -24,9 +24,9 @@ print "base dir path", BASE_DIR
 SECRET_KEY = '7u8u&c$jzn!#$)+oj(^(now29ng!xcgcw&s4zf@y4v8cd^dvi0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '111.222.333.444', 'mywebsite.com']
+ALLOWED_HOSTS = ['13.58.182.84']
 
 # Application definition
 
@@ -133,4 +133,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # uncomment below line in production when debug is false
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
