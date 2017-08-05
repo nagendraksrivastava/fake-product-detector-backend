@@ -80,7 +80,11 @@ def login_user(request):
                 CODE_TXT: SUCCESS,
                 MESSAGE_TXT: SUCCESSFUll_LOGIN
             },
-            TOKEN_TXT: token.key
+            TOKEN_TXT: token.key,
+            USER_EMAIL: user.email,
+            USER_FNAME: user.first_name,
+            USER_LNAME: user.last_name
+
         }
         return HttpResponse(json.dumps(json_result))
     else:
@@ -131,7 +135,10 @@ def signup_user(request):
             CODE_TXT: SUCCESS,
             MESSAGE_TXT: SUCCESSFUll_SIGNUP
         },
-        TOKEN_TXT: token.key
+        TOKEN_TXT: token.key,
+        USER_EMAIL: user.email,
+        USER_FNAME: user.first_name,
+        USER_LNAME: user.last_name
     }
     return HttpResponse(json.dumps(json_result))
 

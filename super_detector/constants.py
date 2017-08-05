@@ -5,6 +5,9 @@ MESSAGE_TXT = "message"
 REQUEST_TYPE_GET = 'GET'
 REQUEST_TYPE_POST = 'POST'
 TOKEN_TXT = "token"
+USER_FNAME = "first_name"
+USER_LNAME = "last_name"
+USER_EMAIL = "email"
 
 BAD_REQUEST_MESSAGE = "Bad Request"
 SUCCESSFUll_LOGIN = "successful logged in"
