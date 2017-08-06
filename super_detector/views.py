@@ -108,10 +108,10 @@ def signup_user(request):
     firstname = body['fname']
     lastname = body['lname']
     try:
-        user = User.objects.create_user(username=email, email=email, password=password)
+        new_user = User.objects.create_user(username=email, email=email, password=password)
     except:
         if User.objects.get_by_natural_key(email):
-            failure_message = EMAIL_ALREADY_EXISTS
+            failure_message = EMAIL_ALREADY_EXISTS_TXT
             json_result = {STATUS_TXT: {CODE_TXT: EMAIL_ALREADY_EXISTS, MESSAGE_TXT: failure_message}}
             return HttpResponse(json.dumps(json_result))
         else:
@@ -119,26 +119,31 @@ def signup_user(request):
             json_result = {STATUS_TXT: {CODE_TXT: SERVER_ERROR, MESSAGE_TXT: failure_message}}
             return HttpResponse(json.dumps(json_result))
 
-    user.first_name = firstname
-    user.last_name = lastname
-    user.is_active = True
-    user.save()
+    new_user.first_name = firstname
+    new_user.last_name = lastname
+    new_user.is_active = True
+    new_user.save()
 
     # user profile section needs to create
-    user_profile = UserProfile.objects.create(user=user)
+    user_profile = UserProfile.objects.create(user=new_user)
     user_profile.os_name = "android"
     user_profile.save()
-    login(request, user)
-    token = Token.objects.create(user=user)
+    new_user = authenticate(username=email, password=password)
+    if new_user:
+        login(request, new_user)
+    else:
+        json_result = {STATUS_TXT: {CODE_TXT: 606, MESSAGE_TXT: "some problem occured with the process, please login "}}
+        return HttpResponse(json.dumps(json_result))
+    token = Token.objects.create(user=new_user)
     json_result = {STATUS_TXT:
         {
             CODE_TXT: SUCCESS,
             MESSAGE_TXT: SUCCESSFUll_SIGNUP
         },
         TOKEN_TXT: token.key,
-        USER_EMAIL: user.email,
-        USER_FNAME: user.first_name,
-        USER_LNAME: user.last_name
+        USER_EMAIL: new_user.email,
+        USER_FNAME: new_user.first_name,
+        USER_LNAME: new_user.last_name
     }
     return HttpResponse(json.dumps(json_result))
 
