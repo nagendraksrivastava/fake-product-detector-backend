@@ -104,21 +104,28 @@ def search_product(request):
     subcategory_id = body['subcategory_id']
     brand_id = body['brand_id']
     bar_code = body['barcode']
-    serial_no = body['serial_no']
+    # serial_no = body['serial_no']
     if Token.objects.get(key=token_value):
         product = Product.objects.filter(
             sub_category=subcategory_id,
             brand=brand_id,
-            bar_code=bar_code,
-            serial_no=serial_no)
+            bar_code=bar_code
+            # serial_no=serial_no commented serial no for as of  now
+        )
         product_info = []
         if product:
             product_info = {
                 STATUS_TXT: {CODE_TXT: SUCCESS, MESSAGE_TXT: ""},
-                "product": PRODUCT_FOUND_IN_OUR_DATABASE
+                "product": PRODUCT_FOUND_IN_OUR_DATABASE,
+                "product_code": 1
             }
             return HttpResponse(json.dumps(product_info))
         else:
+            product_info = {
+                STATUS_TXT: {CODE_TXT: SUCCESS, MESSAGE_TXT: ""},
+                "product": PRODUCT_NOT_FOUND_IN_OUR_DATABASE,
+                "product_code": 0
+            }
             return HttpResponse(json.dumps(product_info))
     else:
         json_result = {STATUS_TXT: {CODE_TXT: INVALID_TOKEN, MESSAGE_TXT: INVALID_TOKEN_TXT}}
