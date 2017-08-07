@@ -21,3 +21,4 @@ EMAIL_NOT_REGISTERED = "Email not registered with us"
 INVALID_TOKEN_TXT = "Invalid token, please logout and login again"
 
 PRODUCT_FOUND_IN_OUR_DATABASE = "Product found in our database"
+PRODUCT_NOT_FOUND_IN_OUR_DATABASE = "Product is not available in database"
