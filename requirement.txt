@@ -1,0 +1,36 @@
+sudo apt-get update
+sudo apt-get install python-pip python-dev mysql-server libmysqlclient-dev
+sudo mysql_install_dbsudo
+mysql_secure_installation
+CREATE DATABASE product CHARACTER SET UTF8;
+CREATE USER product@localhost IDENTIFIED BY 'product';
+GRANT ALL PRIVILEGES ON product.* TO product@localhost;
+FLUSH PRIVILEGES;
+
+sudo pip install virtualenv
+virtualenv detectorenv
+source detectorenv/bin/activate
+pip install django mysqlclient
+pip install django
+pip install djangorestframework
+pip install pygments  # We'll be using this for the code highlighting
+
+pip install django-rest-framework-social-oauth2
+
+
+mysql connection problem 
+sudo pip install mysql-python
+
+
+
+Connect to remote mysql server to webserver 
+mysql -u root -p
+CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
+CREATE USER 'username'@'IP ADDRESS' IDENTIFIED BY 'password';
+
+GRANT ALL PRIVILEGES ON *.* TO 'username'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;
+GRANT SELECT,INSERT,DELETE,UPDATE ON *.* TO 'username'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+exit;
+
+
